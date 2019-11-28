@@ -7,6 +7,14 @@ public class Message {
 	private Date date;
 	private User sender;
 	private User reciever;
+	
+	public Message(String content, Date date, User sender, User reciever)
+	{
+		this.content = content;
+		this.date = date;
+		this.sender = sender;
+		this.reciever = reciever;
+	}
 
 	public String GetContent()
 	{
