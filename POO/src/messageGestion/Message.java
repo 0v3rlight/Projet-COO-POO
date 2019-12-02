@@ -1,6 +1,7 @@
-import java.util.Date;
+package messageGestion ;
 
-import com.sun.tools.javac.util.Pair;
+import java.util.Date;
+import userGestion.User;
 
 public class Message {
 	private String content;

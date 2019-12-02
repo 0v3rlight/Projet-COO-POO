@@ -13,22 +13,17 @@ public class LocalUser extends User {
 			e.printStackTrace();
 		}
 		try {
+			// getHardwareAddress return sometimes null, sometimes the real MAC address
 			NetworkInterface interf = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-			byte[] address_MAC = interf.getHardwareAddress();
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < address_MAC.length; i++) {
-				sb.append(String.format("%02X%s", address_MAC[i], (i < address_MAC.length - 1) ? ":" : ""));		
+			byte[] mac = interf.getHardwareAddress();
+			StringBuilder sbe = new StringBuilder();
+			for (int i = 0; i < mac.length; i++) {
+				sbe.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? ":" : ""));
 			}
-			this.MAC_address = sb.toString() ;
+			this.MAC_address = sbe.toString() ;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main (String[] arg) {
-		LocalUser user1 = new LocalUser("user1");
-		System.out.println(user1.IP_address);
-		System.out.println(user1.MAC_address);
 	}
 
 }
