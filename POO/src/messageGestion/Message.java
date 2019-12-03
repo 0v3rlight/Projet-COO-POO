@@ -17,21 +17,30 @@ public class Message {
 		this.reciever = reciever;
 	}
 
-	public String GetContent()
+	public String getContent()
 	{
 		return this.content;
 	}
-	public Date GetDate()
+	public Date getDate()
 	{
 		return this.date;
 	}
-	public User GetSender()
+	public User getSender()
 	{
 		return this.sender;
 	}
-	public User GetReciever()
+	public User getReciever()
 	{
 		return this.reciever;
 	}
 
+	public String toString(){
+		String stringMsg = "";
+		stringMsg.concat(
+				"[ To : " + this.getSender().getUserPseudo() +
+				" ; From : " + this.getReciever().getUserPseudo() +
+				" ; Date : " + this.getDate().toString() +"]\n"
+				+ this.getContent() + "\n\n");
+		return stringMsg;
+	}
 }
