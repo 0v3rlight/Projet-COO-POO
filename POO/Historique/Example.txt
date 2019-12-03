@@ -1,0 +1,1 @@
+[(Date)Date:Du:Message,(String)PseudoDuDestinataire,(String)PseudoEnvoyeur,(String)message]
