@@ -26,7 +26,7 @@ public class History {
 	
 	public void add_msg(Message msg) throws IOException {
 		
-		this.ListeMessages.add(msg);
+		this.ListeMessages.concat(msg.toString());
 		String stringMsg = msg.toString();
 		String exteriorIP = "";
 		
