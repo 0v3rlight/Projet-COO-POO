@@ -3,21 +3,24 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import userGestion.LocalUser;
 
 public class History {
 	
-	private List<Message> ListeMessages;
+	private String ListeMessages;
 	
-	public History ( String AdresseIPExterne) {
-		
-		
+	public History ( String AdresseIPExterne) throws IOException {
+
+		this.ListeMessages = Files.readString( Paths.get(".//History/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
 		
 	}
 	
-	public List<Message> getHistory(){
+	public String getHistory(){
 		return this.ListeMessages;
 	}
 	
