@@ -1,29 +1,25 @@
 package userGestion;
 
+import java.net.*;
+
 public class User {
 		
 	protected String Pseudo;
-	protected String IP_address;
-	protected String MAC_address;
+	protected InetAddress IP_address;
 		
 	public User() {}
 	
-	public User(String Ps, String IP, String MAC) {
+	public User(String Ps, InetAddress IP) {
 		this.Pseudo = Ps ;
 		this.IP_address = IP ;
-		this.MAC_address = MAC ;
 	}
 	
 	public String getUserPseudo() {
 		return this.Pseudo ;
 	}
 	
-	public String getUserIP() {
+	public InetAddress getUserIP() {
 		return this.IP_address ;
-	}
-	
-	public String getUserMAC() {
-		return this.MAC_address ;
 	}
 	
 }

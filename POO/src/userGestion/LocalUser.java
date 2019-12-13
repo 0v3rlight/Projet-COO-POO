@@ -1,29 +1,25 @@
 package userGestion;
 
 import java.net.*;
+import java.util.Enumeration;
 
 public class LocalUser extends User {
 
 	public LocalUser(String Ps) {
 		this.Pseudo = Ps ;
+		InetAddress ip = null ;
 		try {
-			String ip = InetAddress.getLocalHost().getHostAddress();
-			this.IP_address = ip;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			// getHardwareAddress return sometimes null, sometimes the real MAC address
-			NetworkInterface interf = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-			byte[] mac = interf.getHardwareAddress();
-			StringBuilder sbe = new StringBuilder();
-			for (int i = 0; i < mac.length; i++) {
-				sbe.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? ":" : ""));
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			while (e.hasMoreElements() ) {
+				NetworkInterface interfaceReseau = e.nextElement();
+				if (interfaceReseau.getDisplayName().contains("eth0")) {
+					ip = interfaceReseau.getInterfaceAddresses().get(1).getAddress() ;
+				}
 			}
-			this.MAC_address = sbe.toString() ;
+			this.IP_address = ip ;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 }
