@@ -14,7 +14,7 @@ public class UDPSender {
 		} catch (Exception e) {}
 	}
 	
-	public void sendBroadcast() {
+	public void sendBroadcast(String msg) {
 		try {
 			InetAddress broadcast = null ;
 			dSocket.setBroadcast(true);
@@ -26,7 +26,6 @@ public class UDPSender {
 				}
 			}
 			System.out.println("L'adresse de broadcast est : "  + broadcast.toString()) ;
-			String msg = "Coucou à tous \n" ;
 			byte[] data = msg.getBytes() ;
 			DatagramPacket outpacket = new DatagramPacket(data, data.length, broadcast, port);
 			dSocket.send(outpacket);
@@ -35,10 +34,10 @@ public class UDPSender {
 		} catch (Exception e) {}
 	}
 	
-	public void send(String contenu, InetAddress adresse_distante) {
+	public void send(String contenu, String adresse_distante) {
 		try {
 			byte[] data = contenu.getBytes() ;
-			DatagramPacket outpacket = new DatagramPacket(data, data.length, adresse_distante, port);
+			DatagramPacket outpacket = new DatagramPacket(data, data.length, InetAddress.getByName(adresse_distante), port);
 			dSocket.send(outpacket);
 		} catch (Exception e) {}
 	}

@@ -22,5 +22,10 @@ public class UDPListener extends Thread {
 		System.out.println("Paquet reçu : " + response);
 		return response ;
 	}
+	
+	public void run() {
+		//TODO : The use of the thread UDPListener ?
+		//		 -> It displays every message to the screen
+	}
 
 }

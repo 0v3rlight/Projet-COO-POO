@@ -7,7 +7,9 @@ public class User {
 	protected String Pseudo;
 	protected InetAddress IP_address;
 		
-	public User() {}
+	public User(String Ps) {
+		this.Pseudo = Ps ;
+	}
 	
 	public User(String Ps, InetAddress IP) {
 		this.Pseudo = Ps ;
