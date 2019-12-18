@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SessionFrame implements ActionListener {
+/*public class SessionFrame implements ActionListener {
     JFrame Frame;
     JPanel ChatPanel;
     JTextField History;
@@ -20,4 +20,4 @@ public class SessionFrame implements ActionListener {
     }
 	
 
-}
+} */

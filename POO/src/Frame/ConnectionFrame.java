@@ -36,8 +36,7 @@ public class ConnectionFrame implements ActionListener {
         
         newPseudo = new JTextField();
         newPseudo.setPreferredSize(new Dimension(400, 10));
-        sendPseudo = new JButton("ok");    
-        newPseudo.setBorder(0,10,10,0);
+        sendPseudo = new JButton("ok");
         bonjour = new JLabel("Bonjour ! Veuillez choisir un pseudo", SwingConstants.CENTER);
         bonjour.setPreferredSize(new Dimension(400, 50));
         
@@ -65,7 +64,6 @@ public class ConnectionFrame implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	
