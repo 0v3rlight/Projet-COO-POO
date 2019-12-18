@@ -2,7 +2,6 @@ package Frame;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -64,7 +63,8 @@ public class ConnectionFrame implements ActionListener {
 
 	
 	public void actionPerformed(ActionEvent arg0) {
-		
+
+		// TODO Auto-generated method stub
 	}
 	
 	 
@@ -73,7 +73,8 @@ public class ConnectionFrame implements ActionListener {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	ConnectionFrame dframe = new ConnectionFrame();
+            	@SuppressWarnings("unused")
+				ConnectionFrame dframe = new ConnectionFrame();
             }
         });
     }
