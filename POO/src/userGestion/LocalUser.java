@@ -16,7 +16,7 @@ public class LocalUser extends User {
 					ip = interfaceReseau.getInterfaceAddresses().get(1).getAddress() ;
 				}
 			}
-			this.IP_address = ip ;
+			this.IP_address = ip.toString() ;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

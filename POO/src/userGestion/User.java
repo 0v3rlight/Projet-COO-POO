@@ -5,13 +5,13 @@ import java.net.*;
 public class User {
 		
 	protected String Pseudo;
-	protected InetAddress IP_address;
+	protected String IP_address;
 		
 	public User(String Ps) {
 		this.Pseudo = Ps ;
 	}
 	
-	public User(String Ps, InetAddress IP) {
+	public User(String Ps, String IP) {
 		this.Pseudo = Ps ;
 		this.IP_address = IP ;
 	}
@@ -20,7 +20,7 @@ public class User {
 		return this.Pseudo ;
 	}
 	
-	public InetAddress getUserIP() {
+	public String getUserIP() {
 		return this.IP_address ;
 	}
 	

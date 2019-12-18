@@ -2,7 +2,6 @@ package Frame;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,8 +35,7 @@ public class ConnectionFrame implements ActionListener {
         
         newPseudo = new JTextField();
         newPseudo.setPreferredSize(new Dimension(400, 10));
-        sendPseudo = new JButton("ok");    
-        newPseudo.setBorder(0,10,10,0);
+        sendPseudo = new JButton("ok");
         bonjour = new JLabel("Bonjour ! Veuillez choisir un pseudo", SwingConstants.CENTER);
         bonjour.setPreferredSize(new Dimension(400, 50));
         
@@ -66,7 +64,6 @@ public class ConnectionFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	 
@@ -75,7 +72,8 @@ public class ConnectionFrame implements ActionListener {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	ConnectionFrame dframe = new ConnectionFrame();
+            	@SuppressWarnings("unused")
+				ConnectionFrame dframe = new ConnectionFrame();
             }
         });
     }

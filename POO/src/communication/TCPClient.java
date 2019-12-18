@@ -9,8 +9,8 @@ public class TCPClient {
 	private BufferedReader in ;
 	private PrintWriter out ;
 
-	public TCPClient(InetAddress ip, int port) throws IOException {
-        link = new Socket(ip,port);
+	public TCPClient(InetAddress ip_distante, int port) throws IOException {
+        link = new Socket(ip_distante,port);
         // Input and output configuration
         in = new BufferedReader(new InputStreamReader(link.getInputStream())); 
         out = new PrintWriter(link.getOutputStream(),true);

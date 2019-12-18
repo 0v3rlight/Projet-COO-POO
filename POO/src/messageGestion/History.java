@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import userGestion.LocalUser;
 
@@ -31,10 +30,10 @@ public class History {
 		String exteriorIP = "";
 		
 		if (msg.getReciever() instanceof LocalUser){
-			exteriorIP = msg.getSender().getUserIP();
+			exteriorIP = msg.getSender().getUserIP().toString();
 		}
 		else{
-			exteriorIP = msg.getReciever().getUserIP();
+			exteriorIP = msg.getReciever().getUserIP().toString();
 		}
 		
 		File file = new File("../Historique/" + exteriorIP + ".txt");

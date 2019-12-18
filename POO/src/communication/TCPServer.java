@@ -2,27 +2,32 @@ package communication;
 
 import java.io.*;
 import java.net.*;
+import java.util.Vector;
 
 public class TCPServer {
 
 	private Socket link ;
 	private BufferedReader in ;
-	private PrintWriter out ;
+	//private PrintWriter out ;
+	private Boolean active = true ;
+	// Threads list that have been created
+	private Vector<ServerThread> tabClients = new Vector<ServerThread>() ;
 	
 	public TCPServer(int port) throws IOException {
         // Creating Socket Server
         @SuppressWarnings("resource")
 		ServerSocket servSock = new ServerSocket(port);
-        // Get the associated socket
-        link = servSock.accept();
-        // input and output configuration
-        in = new BufferedReader(new InputStreamReader(link.getInputStream())); 
-        out = new PrintWriter(link.getOutputStream(),true);
-        
+        // Wait for incoming connections
+        while (active) {
+        	ServerThread newClient = new ServerThread(servSock.accept()) ;
+        	// NEED A COMMAND TO NOTIFY THE LOCAL USER OF A NEW CONNECTION
+        	tabClients.add(newClient);
+        }
+        link.close();
 	}
 	
 	public void sendingData(String data) {
-        out.println(data);
+        
 	}
 	
 	public String receivingData() throws IOException {
@@ -30,7 +35,7 @@ public class TCPServer {
 	}
 	
 	public void closeConnection() throws IOException {
-		link.close();
+		active = false;
 	}
 
 }
