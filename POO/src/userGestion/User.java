@@ -15,7 +15,7 @@ public class User {
 		this.Pseudo = Ps ;
 		this.IP_address = IP ;
 	}
-	
+
 	public String getUserPseudo() {
 		return this.Pseudo ;
 	}

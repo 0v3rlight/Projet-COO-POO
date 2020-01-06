@@ -1,4 +1,4 @@
-package communication;
+/*package communication;
 
 import java.io.*;
 import java.net.*;
@@ -38,4 +38,4 @@ public class TCPServer {
 		active = false;
 	}
 
-}
+}*/
