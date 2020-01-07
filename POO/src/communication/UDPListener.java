@@ -5,21 +5,29 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Vector;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
+import userGestion.LocalUser;
 import userGestion.User;
 import Frame.*;
 
 public class UDPListener extends Thread {
 	
 	public ChatWindow cw ;
+	public LocalUser lu ;
 	
 	public Vector<User> tabUsers = new Vector<User>() ;
 	
 	private DatagramSocket dSocket ;
 	private int port = 1234 ;
 	private byte[] buffer = new byte[256];
+	private UDPSender udps = new UDPSender();
 
+	public UDPListener() {
+		try {
+			this.dSocket = new DatagramSocket(port);
+			start();
+		} catch (Exception e) {}
+	}
+	
 	public UDPListener(ChatWindow chwi) {
 		try {
 			this.cw = chwi ;
@@ -36,7 +44,10 @@ public class UDPListener extends Thread {
 		return response ;
 	}
 	
-	public void refreshingActiveUsers(String msg, Vector<User> tabUsers) {
+	// Update the users table by analyzing the received message
+	// Message format :
+	// Prefix Pseudo IP
+	public void refreshingActiveUsers(String msg) {
 		if(msg.contains(" ")){
 			String[] output = msg.split(" ");
 			if(output.length!=3){
@@ -49,6 +60,9 @@ public class UDPListener extends Thread {
 				} else if (output[0] == "Bye") {
 					tabUsers.remove(currentUser);
 					this.cw.model.removeElement(output[1]);
+				} else if (output[0] == "New") {
+					String ad_distante = output[2];
+					udps.send(("Hello "+lu.getUserPseudo()+" "+lu.getUserIP()), ad_distante);
 				} else {
 					throw new IllegalArgumentException(msg + " - invalid format for first argument !");
 				}
@@ -58,7 +72,8 @@ public class UDPListener extends Thread {
 		}
 	}
 	
-	public String findIP(String Pseudo, Vector<User> tabUsers) {
+	// Find the IP address given the pseudo
+	public String findIP(String Pseudo) {
 		java.util.Iterator<User> itr = tabUsers.iterator();
 		User element ;
 		String IP = null ;
@@ -72,11 +87,35 @@ public class UDPListener extends Thread {
 	    return IP;
 	}
 	
+	// return 0 if the pseudo is not available, else 1
+	public int pseudoIsAvailable(String Pseudo) {
+		java.util.Iterator<User> itr = tabUsers.iterator();
+		User element ;
+		int res = 1;
+		while(itr.hasNext()) {
+			element = itr.next();
+		    if (element.getUserPseudo().compareTo(Pseudo) != 0) {
+		    	res = 0;
+		    }
+		}
+		return res;
+	}
+	
+	
 	public void run() {
 		// TODO : The use of the thread UDPListener ?
 		//		 -> It will create a UDPSender to broadcast to anyone that it is connected
 		//		 -> It will then wait for any responses and build an array of others active users
 		//		 -> It would be its charge to display and refresh the user selection window
+		String msg ;
+		while (true) {
+			try {
+				msg = receive() ;
+				refreshingActiveUsers(msg);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
