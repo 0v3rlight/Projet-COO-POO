@@ -20,6 +20,7 @@ public class LocalUser extends User {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 }
