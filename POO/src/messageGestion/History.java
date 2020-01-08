@@ -15,7 +15,9 @@ public class History {
 	
 	public History ( String AdresseIPExterne) throws IOException {
 
-		this.ListeMessages = Files.readString( Paths.get(".//History/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
+		File file = new File(".//Historique/" + AdresseIPExterne + ".txt");
+		file.createNewFile();
+		this.ListeMessages = Files.readString( Paths.get(".//Historique/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
 		
 	}
 	
@@ -24,9 +26,9 @@ public class History {
 	}
 	
 	public void add_msg(Message msg) throws IOException {
-		
-		this.ListeMessages.concat(msg.toString());
+
 		String stringMsg = msg.toString();
+		this.ListeMessages.concat(msg.toString());
 		String exteriorIP = "";
 		
 		if (msg.getReciever() instanceof LocalUser){
@@ -36,20 +38,21 @@ public class History {
 			exteriorIP = msg.getReciever().getUserIP().toString();
 		}
 		
-		File file = new File("../Historique/" + exteriorIP + ".txt");
+		File file = new File("Historique/" + exteriorIP + ".txt");
 		
-		if (file.exists() && !file.isDirectory()) { 
-			FileWriter fr = new FileWriter(file, true);
-			BufferedWriter br = new BufferedWriter(fr);
+		if (file.exists() && !file.isDirectory()) {
+			FileWriter writer = new FileWriter(file, true);
+			BufferedWriter br = new BufferedWriter(writer);
 			br.newLine();
 			br.write(stringMsg);
 			br.close();
-			fr.close();
+			writer.close();
 		}
 		else{
-			FileWriter fr = new FileWriter(file, true);
-			fr.write(stringMsg);
-			fr.close();
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file, true);
+			writer.write(stringMsg);
+			writer.close();
 		}
 		
 	}

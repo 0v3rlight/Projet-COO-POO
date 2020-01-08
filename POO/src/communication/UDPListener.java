@@ -11,22 +11,24 @@ import Frame.*;
 
 public class UDPListener extends Thread {
 	
-	public ChatWindow cw ;
 	public LocalUser lu ;
+	public ChatWindow cw = new ChatWindow(lu,this) ;
 	
 	public Vector<User> tabUsers = new Vector<User>() ;
 	
 	private DatagramSocket dSocket ;
-	private int port = 1234 ;
+	public int port = 12000 ;
+	private int port_envoi = 67000;
 	private byte[] buffer = new byte[256];
-	private UDPSender udps = new UDPSender();
+	private UDPSender udps = new UDPSender(port);
 
-	public UDPListener() {
+	/*public UDPListener(int port_en) {
 		try {
+			this.port_envoi = port_en ;
 			this.dSocket = new DatagramSocket(port);
 			start();
 		} catch (Exception e) {}
-	}
+	}*/
 	
 	public UDPListener(ChatWindow chwi) {
 		try {
@@ -54,16 +56,17 @@ public class UDPListener extends Thread {
 				throw new IllegalArgumentException(msg + " - invalid format (numbers of arguments) !");
 			}else{
 				User currentUser = new User(output[1],output[2]);
-				if(output[0] == "Hello") {
+				if(output[0].compareTo("Hello") != 0) {
 					tabUsers.addElement(currentUser);
 					this.cw.model.addElement(output[1]);
-				} else if (output[0] == "Bye") {
+				} else if (output[0].compareTo("Bye") != 0) {
 					tabUsers.remove(currentUser);
 					this.cw.model.removeElement(output[1]);
-				} else if (output[0] == "New") {
+				} else if (output[0].compareTo("New") != 0) {
 					String ad_distante = output[2];
 					udps.send(("Hello "+lu.getUserPseudo()+" "+lu.getUserIP()), ad_distante);
 				} else {
+					System.out.println(output[0]);
 					throw new IllegalArgumentException(msg + " - invalid format for first argument !");
 				}
 			}

@@ -12,7 +12,7 @@ public class LocalUser extends User {
 			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			while (e.hasMoreElements() ) {
 				NetworkInterface interfaceReseau = e.nextElement();
-				if (interfaceReseau.getDisplayName().contains("en0")) {
+				if (interfaceReseau.getDisplayName().contains("eth0")) {
 					ip = interfaceReseau.getInterfaceAddresses().get(1).getAddress() ;
 				}
 			}

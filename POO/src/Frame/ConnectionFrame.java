@@ -26,7 +26,7 @@ public class ConnectionFrame implements ActionListener {
 	 LocalUser lu;
 	 public ChatWindow w ;
 	 UDPListener udpl = new UDPListener(w);
-	 UDPSender udps = new UDPSender();
+	 UDPSender udps = new UDPSender(udpl.port);
 
 	public ConnectionFrame() {
 
@@ -71,7 +71,9 @@ public class ConnectionFrame implements ActionListener {
 		String ps = newPseudo.getText() ;
 		if (udpl.pseudoIsAvailable(ps) != 0) {
 			LocalUser lu = new LocalUser(ps);
+			System.out.println("On va envoyer un broadcast");
 			udps.sendBroadcast("Hello " + ps + " " + lu.getUserIP());
+			System.out.println("On a envoyé un broadcast");
 			w = new ChatWindow(lu, udpl) ;
 			Frame.setVisible(false);
 		} else {

@@ -35,12 +35,10 @@ public class Message {
 	}
 
 	public String toString(){
-		String stringMsg = "";
-		stringMsg.concat(
-				"[ To : " + this.getSender().getUserPseudo() +
+		String stringMsg = 	"[ To : " + this.getSender().getUserPseudo() +
 				" ; From : " + this.getReciever().getUserPseudo() +
 				" ; Date : " + this.getDate().toString() +"]\n"
-				+ this.getContent() + "\n\n");
+				+ this.getContent() + "\n\n";
 		return stringMsg;
 	}
 }
