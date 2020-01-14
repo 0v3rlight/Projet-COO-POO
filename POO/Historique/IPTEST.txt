@@ -1,0 +1,8 @@
+historiqueLabel ! Veuillez choisir un pseudo \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n "
++ "linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak \n linebreak
+
