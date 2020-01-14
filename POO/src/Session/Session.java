@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+
+import communication.UDPListener;
 import messageGestion.History;
 import messageGestion.Message;
 import userGestion.LocalUser;
@@ -38,11 +40,10 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	 
 	 
 
-	public Session(User utilisateurDistant, LocalUser utilisateurLocal) throws IOException {
-		
-		this.utilisateurDistant = utilisateurDistant;
+	public Session(LocalUser utilisateurLocal, String pseudoDistant, UDPListener udpl) throws IOException {
+		this.utilisateurDistant = udpl.findUser(pseudoDistant);
 		this.utilisateurLocal = utilisateurLocal;
-		historique = new History(utilisateurDistant.getUserIP());
+		this.historique = new History(utilisateurDistant.getUserIP());
 		createframe();
 		
 	}
@@ -59,7 +60,7 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	private void createframe(){
 		
        //Create and set up the window.
-       Frame = new JFrame("Conversation");
+       Frame = new JFrame(utilisateurDistant.getUserPseudo());
        Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        Panel = new JPanel(new BorderLayout(2,2));
 

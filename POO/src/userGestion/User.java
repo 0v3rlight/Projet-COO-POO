@@ -4,8 +4,8 @@ import java.net.*;
 
 public class User {
 		
-	protected String Pseudo;
-	protected String IP_address;
+	public String Pseudo;
+	public String IP_address;
 		
 	public User(String Ps) {
 		this.Pseudo = Ps ;

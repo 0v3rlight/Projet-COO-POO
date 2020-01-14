@@ -17,6 +17,7 @@ public class LocalUser extends User {
 				}
 			}
 			this.IP_address = ip.toString() ;
+			this.IP_address = this.IP_address.replaceAll("/", "");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

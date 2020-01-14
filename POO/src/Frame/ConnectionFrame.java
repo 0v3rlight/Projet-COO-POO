@@ -23,13 +23,17 @@ public class ConnectionFrame implements ActionListener {
 	 JLabel bonjour;
 	 JButton sendPseudo;
 	 JTextField newPseudo;
-	 LocalUser lu;
-	 public ChatWindow w ;
-	 UDPListener udpl = new UDPListener(w);
-	 UDPSender udps = new UDPSender(udpl.port);
+	 LocalUser lu = new LocalUser("provisoire");
+	 
+	 ChatWindow w = new ChatWindow(lu);
+	 UDPListener udpl = new UDPListener(w,lu);
+	 UDPSender udps = new UDPSender();
 
 	public ConnectionFrame() {
-
+		w.setUdpl(udpl);
+		// Hide the ChatWindow for the moment
+		w.f.setVisible(false);
+		
         //Create and set up the window.
         Frame = new JFrame("Connexion");
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,7 +66,6 @@ public class ConnectionFrame implements ActionListener {
         Frame.pack();
         Frame.setVisible(true);
         
-        lu = new LocalUser("provisoire");
         udps.sendBroadcast("New provisoire "+lu.getUserIP());
 	}
 
@@ -70,12 +73,12 @@ public class ConnectionFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		String ps = newPseudo.getText() ;
 		if (udpl.pseudoIsAvailable(ps) != 0) {
-			LocalUser lu = new LocalUser(ps);
+			lu.Pseudo = ps ;
 			System.out.println("On va envoyer un broadcast");
 			udps.sendBroadcast("Hello " + ps + " " + lu.getUserIP());
 			System.out.println("On a envoyé un broadcast");
-			w = new ChatWindow(lu, udpl) ;
 			Frame.setVisible(false);
+			w.f.setVisible(true);
 		} else {
 			bonjour.setText("Pseudo déjà utilisé");
 			newPseudo.setText("");

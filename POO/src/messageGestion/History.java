@@ -15,10 +15,10 @@ public class History {
 	
 	public History ( String AdresseIPExterne) throws IOException {
 
-		File file = new File(".//Historique/" + AdresseIPExterne + ".txt");
+		File file = new File("Historique/" + AdresseIPExterne + ".txt");
 		file.createNewFile();
-		this.ListeMessages = Files.readString( Paths.get(".//Historique/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
-		
+		this.ListeMessages = Files.readString(Paths.get("Historique/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
+
 	}
 	
 	public String getHistory(){

@@ -12,15 +12,14 @@ import Frame.*;
 public class UDPListener extends Thread {
 	
 	public LocalUser lu ;
-	public ChatWindow cw = new ChatWindow(lu,this) ;
+	public ChatWindow cw ;
 	
 	public Vector<User> tabUsers = new Vector<User>() ;
 	
 	private DatagramSocket dSocket ;
-	public int port = 12000 ;
-	private int port_envoi = 67000;
+	public int port = 0 ;
 	private byte[] buffer = new byte[256];
-	private UDPSender udps = new UDPSender(port);
+	private UDPSender udps = new UDPSender();
 
 	/*public UDPListener(int port_en) {
 		try {
@@ -30,10 +29,20 @@ public class UDPListener extends Thread {
 		} catch (Exception e) {}
 	}*/
 	
-	public UDPListener(ChatWindow chwi) {
+	public UDPListener(ChatWindow chwi, LocalUser lu) {
 		try {
+			this.lu = lu ;
 			this.cw = chwi ;
-			this.dSocket = new DatagramSocket(port);
+			this.dSocket = new DatagramSocket(1235);
+			start();
+		} catch (Exception e) {}
+	}
+	
+	public UDPListener() {
+		try {
+			this.dSocket = new DatagramSocket(1235);
+			System.out.println(this.dSocket.getLocalPort()) ;
+			System.out.println(this.dSocket.getPort()) ;
 			start();
 		} catch (Exception e) {}
 	}
@@ -50,28 +59,42 @@ public class UDPListener extends Thread {
 	// Message format :
 	// Prefix Pseudo IP
 	public void refreshingActiveUsers(String msg) {
+		System.out.println("[refreshingActiveUsers]");
 		if(msg.contains(" ")){
 			String[] output = msg.split(" ");
 			if(output.length!=3){
-				throw new IllegalArgumentException(msg + " - invalid format (numbers of arguments) !");
-			}else{
+				System.out.println("Paquet inutile reçu (mauvais nombre d'arguments) ");
+			} else {
 				User currentUser = new User(output[1],output[2]);
-				if(output[0].compareTo("Hello") != 0) {
-					tabUsers.addElement(currentUser);
-					this.cw.model.addElement(output[1]);
-				} else if (output[0].compareTo("Bye") != 0) {
-					tabUsers.remove(currentUser);
+				if(output[0].compareTo("Hello") == 0) {
+					//if (output[2].compareTo(lu.getUserIP()) != 0) {
+						tabUsers.addElement(currentUser);
+						this.cw.model.addElement(output[1]);
+					//}
+				} else if (output[0].compareTo("Bye") == 0) {
+					java.util.Iterator<User> itr = tabUsers.iterator();
+					User element ;
+					User a_effacer = null;
+					while(itr.hasNext()) {
+						element = itr.next();
+					    if ((element.getUserPseudo().contentEquals(currentUser.getUserPseudo())) && (element.getUserIP().contentEquals(currentUser.getUserIP()))) {
+					    	a_effacer = element;
+					    }
+					}
+					tabUsers.remove(a_effacer);
+					//tabUsers.remove(currentUser);
 					this.cw.model.removeElement(output[1]);
-				} else if (output[0].compareTo("New") != 0) {
-					String ad_distante = output[2];
-					udps.send(("Hello "+lu.getUserPseudo()+" "+lu.getUserIP()), ad_distante);
+				} else if (output[0].compareTo("New") == 0) {
+					if (output[2].compareTo(lu.getUserIP()) != 0) {
+						String ad_distante = output[2];
+						udps.send(("Hello "+lu.getUserPseudo()+" "+lu.getUserIP()), ad_distante);
+					}
 				} else {
-					System.out.println(output[0]);
-					throw new IllegalArgumentException(msg + " - invalid format for first argument !");
+					System.out.println("Paquet inutile reçu : " + output[0]);
 				}
 			}
 		}else{
-			throw new IllegalArgumentException(msg + " - invalid format ! (no spaces detected)");
+			System.out.println("Paquet inutile reçu (pas le bon format)");
 		}
 	}
 	
@@ -90,6 +113,21 @@ public class UDPListener extends Thread {
 	    return IP;
 	}
 	
+	// Find the IP address given the pseudo
+		public User findUser(String Pseudo) {
+			java.util.Iterator<User> itr = tabUsers.iterator();
+			User element ;
+			User recherche = null ;
+		    while(itr.hasNext())
+		    {
+		    	element = itr.next();
+		    	if (element.getUserPseudo() == Pseudo) {
+		    		recherche = element ;
+		    	}
+		    }
+		    return recherche;
+		}
+	
 	// return 0 if the pseudo is not available, else 1
 	public int pseudoIsAvailable(String Pseudo) {
 		java.util.Iterator<User> itr = tabUsers.iterator();
@@ -97,13 +135,25 @@ public class UDPListener extends Thread {
 		int res = 1;
 		while(itr.hasNext()) {
 			element = itr.next();
-		    if (element.getUserPseudo().compareTo(Pseudo) != 0) {
+		    if (element.getUserPseudo().compareTo(Pseudo) == 0) {
 		    	res = 0;
 		    }
 		}
 		return res;
 	}
 	
+	public void afficherUsers() {
+        System.out.println("Affichage du taleau des Users actifs");
+        java.util.Iterator<User> itr = tabUsers.iterator();
+		User element ;
+		while(itr.hasNext()) {
+			element = itr.next();
+		    System.out.println(element.getUserPseudo() + " / " + element.getUserIP());
+		}
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+    }
 	
 	public void run() {
 		// TODO : The use of the thread UDPListener ?
@@ -111,14 +161,20 @@ public class UDPListener extends Thread {
 		//		 -> It will then wait for any responses and build an array of others active users
 		//		 -> It would be its charge to display and refresh the user selection window
 		String msg ;
+		System.out.println(this.dSocket.getPort());
 		while (true) {
 			try {
 				msg = receive() ;
 				refreshingActiveUsers(msg);
+				afficherUsers();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	/*public static void main (String args[]) {
+		UDPListener udpl = new UDPListener();
+	}*/
 
 }

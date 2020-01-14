@@ -3,6 +3,8 @@ package Frame;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -12,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import Session.Session;
 import communication.UDPListener;
 import userGestion.LocalUser;
 import userGestion.User;
@@ -21,30 +24,13 @@ public class ChatWindow {
 	public DefaultListModel<String> model = new DefaultListModel<String>();
 	public JList<String> list = new JList<String>(model);
 	public LocalUser lu ;
+	public JFrame f = new JFrame();
 	public UDPListener udpl ;
+	//public UDPListener udpl ;
 	
-	public ChatWindow(LocalUser lu, UDPListener udpl) {
+	public ChatWindow(LocalUser lu) {
 		this.lu = lu ;
-		this.udpl = udpl;
 		
-		// Adding all active users to the GUI
-		java.util.Iterator<User> itr = udpl.tabUsers.iterator();
-		User element ;
-	    while(itr.hasNext())
-	    {
-	    	element = itr.next();
-	    	model.addElement(element.getUserPseudo());
-	    }
-		
-		model.addElement("utilisateur1");
-		model.addElement("utilisateur2");
-		model.addElement("utilisateur3");
-		model.addElement("utilisateur4");
-		model.addElement("utilisateur5");
-		model.addElement("utilisateur6");
-		model.addElement("utilisateur7");
-		
-		JFrame f = new JFrame();
 	    f.setTitle("Utilisateurs actifs");
 
 	    JPanel panel = new JPanel();
@@ -63,11 +49,15 @@ public class ChatWindow {
 	            Object item = model.getElementAt(index); // item corresponds to the Pseudo
 	            										  // try to create a new object like :
 	            										 // new SessionFrame(item)
+	            String pseudo_d = (String)item ;
 	            if (index >= 0) {
 	            	/*model.remove(index);*/
-	            	JFrame nf = new JFrame((String)(item));
-	            	nf.setVisible(true);
-	            	nf.setSize(500, 500);
+	            	try {
+						Session s = new Session(lu,pseudo_d,udpl);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	            }
 	          }
 	        }
@@ -85,6 +75,10 @@ public class ChatWindow {
 	      f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      f.setVisible(true);
 
+	}
+	
+	public void setUdpl(UDPListener udpl) {
+		this.udpl = udpl ;
 	}
 	
 	/*public static void main (String[] args) {
