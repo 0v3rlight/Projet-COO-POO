@@ -3,6 +3,8 @@ package Frame;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -16,6 +18,7 @@ import javax.swing.ListSelectionModel;
 
 import Session.Session;
 import communication.UDPListener;
+import communication.UDPSender;
 import userGestion.LocalUser;
 import userGestion.User;
 
@@ -32,6 +35,15 @@ public class ChatWindow {
 		this.lu = lu ;
 		
 	    f.setTitle("Utilisateurs actifs");
+	    
+	    f.addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
+                UDPSender udps = new UDPSender();
+                udps.sendBroadcast("Bye "+ lu.getUserPseudo() + " " + lu.getUserIP());
+            }
+        });
 
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
