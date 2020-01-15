@@ -16,6 +16,10 @@ public class User {
 		this.IP_address = IP ;
 	}
 	
+	public void SetPseudo(String ps) {
+		this.Pseudo = ps ;
+	}
+	
 	public String getUserPseudo() {
 		return this.Pseudo ;
 	}

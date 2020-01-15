@@ -73,7 +73,7 @@ public class ConnectionFrame implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		String ps = newPseudo.getText() ;
 		if (udpl.pseudoIsAvailable(ps) != 0) {
-			lu.Pseudo = ps ;
+			lu.SetPseudo(ps);
 			System.out.println("On va envoyer un broadcast");
 			udps.sendBroadcast("Hello " + ps + " " + lu.getUserIP());
 			System.out.println("On a envoyé un broadcast");
