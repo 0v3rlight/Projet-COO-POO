@@ -20,7 +20,9 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import communication.UDPListener;
+import communication.UDPListenerMessage;
 import communication.UDPSender;
+import communication.UDPSenderMessage;
 import messageGestion.History;
 import messageGestion.Message;
 import userGestion.LocalUser;
@@ -37,16 +39,18 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	 private JTextArea zoneTexte;
 	 
 	 
-	 private User utilisateurDistant;
-	 private LocalUser utilisateurLocal;
-	 private History historique;
+	 public User utilisateurDistant;
+	 public LocalUser utilisateurLocal;
+	 public History historique;
 	 
-	 
+	 public UDPListenerMessage udplm = new UDPListenerMessage(this);
+	 public UDPSenderMessage udpsm ;
 
 	public Session(LocalUser utilisateurLocal, String pseudoDistant, UDPListener udpl) throws IOException {
 		this.utilisateurDistant = udpl.findUser(pseudoDistant);
 		this.utilisateurLocal = utilisateurLocal;
 		this.historique = new History(utilisateurDistant.getUserIP());
+		this.udpsm = new UDPSenderMessage(this.utilisateurDistant.getUserIP()) ;
 		createframe();
 		
 	}
@@ -103,9 +107,10 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		Date D = new Date();
-		Message newMsg = new Message(zoneTexte.getText(), D, utilisateurLocal, utilisateurDistant);
+		String contenu = zoneTexte.getText() ;
+		Message newMsg = new Message(contenu, utilisateurLocal, utilisateurDistant);
 		try {
+			udpsm.send("Message " + contenu);
 			historique.add_msg(newMsg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -116,7 +121,7 @@ public class Session implements ActionListener, ScrollPaneConstants{
 		
 	}
 	
-	private void refreshHistory() {
+	public void refreshHistory() {
 		try {
 			historique = new History(utilisateurDistant.getUserIP());
 		} catch (IOException e) {
