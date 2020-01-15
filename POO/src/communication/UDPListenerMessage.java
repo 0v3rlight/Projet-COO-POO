@@ -14,19 +14,19 @@ import messageGestion.Message;
 public class UDPListenerMessage extends Thread {
 	
 	public LocalUser lu ;
-	public Session s ;
 	
 	public Vector<User> tabUsers = new Vector<User>() ;
+	public Vector<Session> tabSessions = new Vector<Session>() ;
 	
 	private DatagramSocket dSocket ;
-	public int port = 0 ;
+	public int port ;
 	private byte[] buffer = new byte[256];
 	private UDPSender udps = new UDPSender();
 	
-	public UDPListenerMessage(Session s) {
+	public UDPListenerMessage() {
 		try {
-			this.s = s ;
 			this.dSocket = new DatagramSocket(1236);
+			this.port = this.dSocket.getLocalPort();
 			start();
 		} catch (Exception e) {}
 	}
@@ -36,14 +36,28 @@ public class UDPListenerMessage extends Thread {
 		dSocket.receive(inPacket) ;
 		String response = new String(inPacket.getData(), 0, inPacket.getLength());
 		String[] output = response.split(" ");
-		if (output[0].compareTo("Message") == 0) {
-			String msg = response.replaceFirst("Message ", "");
-			Message Msg = new Message(msg,this.s.utilisateurDistant,this.s.utilisateurLocal);
-			this.s.historique.add_msg(Msg);
-			this.s.refreshHistory();
-		} else {
-			System.out.println("Le signal reçu en UDP n'est pas un message");
-		}
+		String adresse_paquet = inPacket.getAddress().toString().replaceAll("/", "");
+		
+		java.util.Iterator<Session> itr = tabSessions.iterator();
+		Session se ;
+	    while(itr.hasNext())
+	    {
+	    	se = itr.next();
+	    	if ((output[0].compareTo("Message") == 0) && (se.utilisateurDistant.getUserIP().contains(adresse_paquet))) {
+	    		String msg = response.replaceFirst("Message ", "");
+	    		System.out.println("Message reçu : " + msg);
+	    		Message Msg = new Message(msg,se.utilisateurDistant,se.utilisateurLocal);
+	    		se.historique.add_msg(Msg);
+	    		se.refreshHistory();
+	    	} else {
+	    		System.out.println("Le signal reçu en UDP n'est pas un message");
+	    	}
+	    }
+	    
+	}
+	
+	public void addSession (Session se) {
+		tabSessions.add(se);
 	}
 	
 	public void run() {

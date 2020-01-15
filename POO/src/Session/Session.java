@@ -28,7 +28,7 @@ import messageGestion.Message;
 import userGestion.LocalUser;
 import userGestion.User;
 
-public class Session implements ActionListener, ScrollPaneConstants{
+public class Session extends Thread implements ActionListener, ScrollPaneConstants {
 
 	 private JFrame Frame;
 	 private JPanel Panel;
@@ -43,23 +43,21 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	 public LocalUser utilisateurLocal;
 	 public History historique;
 	 
-	 public UDPListenerMessage udplm = new UDPListenerMessage(this);
 	 public UDPSenderMessage udpsm ;
 
 	public Session(LocalUser utilisateurLocal, String pseudoDistant, UDPListener udpl) throws IOException {
 		this.utilisateurDistant = udpl.findUser(pseudoDistant);
 		this.utilisateurLocal = utilisateurLocal;
-		this.historique = new History(utilisateurDistant.getUserIP());
+		this.historique = new History(utilisateurLocal,utilisateurDistant.getUserIP());
 		this.udpsm = new UDPSenderMessage(this.utilisateurDistant.getUserIP()) ;
-		createframe();
-		
+		start();
 	}
 	
 	public Session() throws IOException {
 		
 		this.utilisateurDistant = new User("Michou"," dans_une_galaxie_lointaine");
 		this.utilisateurLocal = new LocalUser("Clemouille la mouille");
-		historique = new History(utilisateurDistant.getUserIP());
+		historique = new History(utilisateurLocal,utilisateurDistant.getUserIP());
 		createframe();
 		
 	}
@@ -123,7 +121,7 @@ public class Session implements ActionListener, ScrollPaneConstants{
 	
 	public void refreshHistory() {
 		try {
-			historique = new History(utilisateurDistant.getUserIP());
+			historique = new History(utilisateurLocal,utilisateurDistant.getUserIP());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,8 +129,8 @@ public class Session implements ActionListener, ScrollPaneConstants{
 		historiqueLabel.setText(historique.getHistory());
 	}
 	
-	public static void main(String[] args) {
-       //Schedule a job for the event-dispatching thread:
+	public void run() {
+       /*//Schedule a job for the event-dispatching thread:
        //creating and showing this application's GUI.
        javax.swing.SwingUtilities.invokeLater(new Runnable() {
            public void run() {
@@ -143,7 +141,8 @@ public class Session implements ActionListener, ScrollPaneConstants{
 				e.printStackTrace();
 			}
            }
-       });
+       });*/
+		createframe();
    }
 	
 

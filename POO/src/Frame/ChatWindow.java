@@ -18,6 +18,7 @@ import javax.swing.ListSelectionModel;
 
 import Session.Session;
 import communication.UDPListener;
+import communication.UDPListenerMessage;
 import communication.UDPSender;
 import userGestion.LocalUser;
 import userGestion.User;
@@ -29,6 +30,7 @@ public class ChatWindow {
 	public LocalUser lu ;
 	public JFrame f = new JFrame();
 	public UDPListener udpl ;
+	public UDPListenerMessage udplm = new UDPListenerMessage();
 	//public UDPListener udpl ;
 	
 	public ChatWindow(LocalUser lu) {
@@ -66,6 +68,7 @@ public class ChatWindow {
 	            	/*model.remove(index);*/
 	            	try {
 						Session s = new Session(lu,pseudo_d,udpl);
+						udplm.addSession(s);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

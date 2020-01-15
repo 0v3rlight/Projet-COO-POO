@@ -12,12 +12,13 @@ import userGestion.LocalUser;
 public class History {
 	
 	private String ListeMessages;
+	public LocalUser lu;
 	
-	public History ( String AdresseIPExterne) throws IOException {
-
-		File file = new File("Historique/" + AdresseIPExterne + ".txt");
+	public History (LocalUser lu, String AdresseIPExterne) throws IOException {
+		this.lu = lu ;
+		File file = new File("Historique/" + AdresseIPExterne + "-" + lu.getUserIP() + ".txt");
 		file.createNewFile();
-		this.ListeMessages = Files.readString(Paths.get("Historique/" + AdresseIPExterne + ".txt"), StandardCharsets.US_ASCII);
+		this.ListeMessages = Files.readString(Paths.get("Historique/" + AdresseIPExterne + "-" + lu.getUserIP() + ".txt"), StandardCharsets.US_ASCII);
 
 	}
 	
@@ -31,14 +32,14 @@ public class History {
 		this.ListeMessages.concat(msg.toString());
 		String exteriorIP = "";
 		
-		if (msg.getReciever() instanceof LocalUser){
+		if (msg.getReciever().getUserIP().compareTo(lu.getUserIP())==0){
 			exteriorIP = msg.getSender().getUserIP().toString();
 		}
-		else{
+		else if (msg.getSender().getUserIP().compareTo(lu.getUserIP())==0){
 			exteriorIP = msg.getReciever().getUserIP().toString();
 		}
 		
-		File file = new File("Historique/" + exteriorIP + ".txt");
+		File file = new File("Historique/" + exteriorIP + "-" + lu.getUserIP() + ".txt");
 		
 		if (file.exists() && !file.isDirectory()) {
 			FileWriter writer = new FileWriter(file, true);

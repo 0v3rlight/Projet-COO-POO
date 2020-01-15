@@ -20,14 +20,6 @@ public class UDPListener extends Thread {
 	public int port = 0 ;
 	private byte[] buffer = new byte[256];
 	private UDPSender udps = new UDPSender();
-
-	/*public UDPListener(int port_en) {
-		try {
-			this.port_envoi = port_en ;
-			this.dSocket = new DatagramSocket(port);
-			start();
-		} catch (Exception e) {}
-	}*/
 	
 	public UDPListener(ChatWindow chwi, LocalUser lu) {
 		try {
