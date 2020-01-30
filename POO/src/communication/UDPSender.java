@@ -21,13 +21,33 @@ public class UDPSender {
 		try {
 			InetAddress broadcast = null ;
 			dSocket.setBroadcast(true);
+			
 			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			while (e.hasMoreElements() ) {
 				NetworkInterface interfaceReseau = e.nextElement();
-				if (interfaceReseau.getDisplayName().contains("eth0")) {
-					broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
+				if (!interfaceReseau.getName().equals("lo")) {
+					Enumeration<InetAddress> addresses = interfaceReseau.getInetAddresses();
+					while (addresses.hasMoreElements() && interfaceReseau.getHardwareAddress().length > 0) {
+						InetAddress nip = addresses.nextElement();
+						if (nip instanceof Inet4Address) {
+							if (nip.isSiteLocalAddress()) {
+								broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
+								System.out.println(interfaceReseau.getName());
+							}
+						}
+					}
 				}
 			}
+			
+			/*Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			while (e.hasMoreElements() ) {
+				NetworkInterface interfaceReseau = e.nextElement();
+				if (interfaceReseau.getDisplayName().contains("eth4")) {
+					broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
+				}
+			}*/
+			
+			
 			System.out.println("L'adresse de broadcast est : "  + broadcast.toString()) ;
 			byte[] data = msg.getBytes() ;
 			DatagramPacket outpacket = new DatagramPacket(data, data.length, broadcast, 1235);
@@ -47,18 +67,5 @@ public class UDPSender {
 			System.out.println("Paquet envoyé individuellement : " + contenu) ;
 		} catch (Exception e) {}
 	}
-	
-	public static void main(String[] args) throws SocketException {
-		UDPSender udps = new UDPSender();
-		udps.send("Hello HAHAHAHAHA 0", "10.1.5.27");
-        /*while (true) {
-        	UDPSender udps = new UDPSender();
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Que voulez-vous envoyer ?");
-            String str = sc.nextLine();
-            udps.sendBroadcast(str);
-            System.out.println("Vous avez envoyé : " + str);
-        }*/
-    }
 
 }
