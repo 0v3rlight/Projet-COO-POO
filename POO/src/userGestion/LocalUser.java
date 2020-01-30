@@ -15,7 +15,7 @@ public class LocalUser extends User {
 				NetworkInterface interfaceReseau = e.nextElement();
 				if (!interfaceReseau.getName().equals("lo")) {
 					Enumeration<InetAddress> addresses = interfaceReseau.getInetAddresses();
-					while (addresses.hasMoreElements() && interfaceReseau.getHardwareAddress().length > 0) {
+					while (addresses != null && addresses.hasMoreElements() && interfaceReseau.getHardwareAddress().length > 0) {
 						InetAddress nip = addresses.nextElement();
 						if (nip instanceof Inet4Address) {
 							if (nip.isSiteLocalAddress()) {

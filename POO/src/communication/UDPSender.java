@@ -22,7 +22,7 @@ public class UDPSender {
 			InetAddress broadcast = null ;
 			dSocket.setBroadcast(true);
 			
-			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			/*Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			while (e.hasMoreElements() ) {
 				NetworkInterface interfaceReseau = e.nextElement();
 				if (!interfaceReseau.getName().equals("lo")) {
@@ -31,22 +31,23 @@ public class UDPSender {
 						InetAddress nip = addresses.nextElement();
 						if (nip instanceof Inet4Address) {
 							if (nip.isSiteLocalAddress()) {
-								broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
+								broadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast() ;
 								System.out.println(interfaceReseau.getName());
 							}
 						}
 					}
 				}
-			}
+			}*/
 			
-			/*Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			while (e.hasMoreElements() ) {
 				NetworkInterface interfaceReseau = e.nextElement();
 				if (interfaceReseau.getDisplayName().contains("eth4")) {
-					broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
+					System.out.println("dans le if") ;
+					broadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast() ;
+					System.out.println("fin du if") ;
 				}
-			}*/
-			
+			}
 			
 			System.out.println("L'adresse de broadcast est : "  + broadcast.toString()) ;
 			byte[] data = msg.getBytes() ;
