@@ -44,11 +44,11 @@ public class UDPSender {
 				NetworkInterface interfaceReseau = e.nextElement();
 				if (interfaceReseau.getDisplayName().contains("eth4")) {
 					System.out.println("dans le if") ;
-					broadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast() ;
+					broadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast() ;
 					System.out.println("fin du if") ;
 				}
 			}
-			
+			broadcast = InetAddress.getByName("255.255.255.255");
 			System.out.println("L'adresse de broadcast est : "  + broadcast.toString()) ;
 			byte[] data = msg.getBytes() ;
 			DatagramPacket outpacket = new DatagramPacket(data, data.length, broadcast, 1235);

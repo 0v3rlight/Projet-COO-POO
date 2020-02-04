@@ -17,6 +17,7 @@ public class History {
 	public History (LocalUser lu, String AdresseIPExterne) throws IOException {
 		this.lu = lu ;
 		File file = new File("Historique/" + AdresseIPExterne + "-" + lu.getUserIP() + ".txt");
+		System.out.println("Création de : Historique/" + AdresseIPExterne + "-" + lu.getUserIP() + ".txt");
 		file.createNewFile();
 		this.ListeMessages = Files.readString(Paths.get("Historique/" + AdresseIPExterne + "-" + lu.getUserIP() + ".txt"), StandardCharsets.US_ASCII);
 
