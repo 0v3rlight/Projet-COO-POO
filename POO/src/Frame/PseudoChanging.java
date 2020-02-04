@@ -24,15 +24,13 @@ public class PseudoChanging implements ActionListener {
 	 JTextField newPseudo;
 	 LocalUser lu = new LocalUser("provisoire");
 	 
-	 ChatWindow w = new ChatWindow(lu);
-	 UDPListener udpl = new UDPListener(w,lu);
-	 UDPSender udps = new UDPSender();
+	 UDPListener udpl ;
+	 UDPSender udps ;
 
-	public PseudoChanging(LocalUser lu) {
+	public PseudoChanging(LocalUser lu, UDPListener udpl, UDPSender udps) {
 		this.lu = lu ;
-		w.setUdpl(udpl);
-		// Hide the ChatWindow for the moment
-		w.f.setVisible(false);
+		this.udpl = udpl ;
+		this.udps = udps ;
 		
        //Create and set up the window.
        Frame = new JFrame("Changement de pseudo");
@@ -79,7 +77,6 @@ public class PseudoChanging implements ActionListener {
 			udps.sendBroadcast("Hello " + ps + " " + lu.getUserIP());
 			System.out.println("On a envoyé un broadcast");
 			Frame.setVisible(false);
-			w.f.setVisible(true);
 		} else {
 			bonjour.setText("Pseudo déjà utilisé");
 			newPseudo.setText("");

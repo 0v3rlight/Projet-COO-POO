@@ -31,6 +31,7 @@ public class ConnectionFrame implements ActionListener {
 
 	public ConnectionFrame() {
 		w.setUdpl(udpl);
+		w.setUdps(udps);
 		// Hide the ChatWindow for the moment
 		w.f.setVisible(false);
 		

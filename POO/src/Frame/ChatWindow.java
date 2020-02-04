@@ -33,6 +33,7 @@ public class ChatWindow {
 	public LocalUser lu ;
 	public JFrame f = new JFrame();
 	public UDPListener udpl ;
+	public UDPSender udps ;
 	public UDPListenerMessage udplm = new UDPListenerMessage();
 	//public UDPListener udpl ;
 	
@@ -45,7 +46,6 @@ public class ChatWindow {
         {
             public void windowClosing(WindowEvent e)
             {
-                UDPSender udps = new UDPSender();
                 udps.sendBroadcast("Bye "+ lu.getUserPseudo() + " " + lu.getUserIP());
             }
         });
@@ -56,7 +56,7 @@ public class ChatWindow {
 	    change_pseudo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PseudoChanging pc = new PseudoChanging(lu) ;
+				PseudoChanging pc = new PseudoChanging(lu,udpl,udps) ;
 			}
 		});
 
@@ -104,6 +104,10 @@ public class ChatWindow {
 	
 	public void setUdpl(UDPListener udpl) {
 		this.udpl = udpl ;
+	}
+	
+	public void setUdps(UDPSender udps) {
+		this.udps = udps ;
 	}
 	
 	/*public static void main (String[] args) {
