@@ -1,6 +1,8 @@
 package Frame;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -48,11 +51,18 @@ public class ChatWindow {
         });
 
 	    JPanel panel = new JPanel();
+	    JButton change_pseudo = new JButton("Changer de Pseudo");
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	    change_pseudo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PseudoChanging pc = new PseudoChanging(lu) ;
+			}
+		});
 
 	    JPanel leftPanel = new JPanel();
-
 	    leftPanel.setLayout(new BorderLayout());
+	    leftPanel.add(change_pseudo,BorderLayout.SOUTH);
 
 	    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    list.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
